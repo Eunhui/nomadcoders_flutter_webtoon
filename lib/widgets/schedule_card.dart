@@ -26,7 +26,7 @@ class ScheduleCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           //crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,36 +36,40 @@ class ScheduleCard extends StatelessWidget {
                 Text(
                   start_time.substring(0, 2),
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w600,
+                    height: 0.9,
                   ),
                 ),
                 Text(
                   start_time.substring(2, 4),
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.w400,
+                    height: 0.9,
                   ),
                 ),
                 const Text(
                   '|',
                   style: TextStyle(
                     fontSize: 30,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
                 Text(
                   end_time.substring(0, 2),
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w600,
+                    height: 0.9,
                   ),
                 ),
                 Text(
                   end_time.substring(2, 4),
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.w400,
+                    height: 0.9,
                   ),
                 ),
               ],
@@ -80,7 +84,7 @@ class ScheduleCard extends StatelessWidget {
                       title,
                       style: const TextStyle(
                         fontSize: 45,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         height: 0.9,
                       ),
                     ),
