@@ -26,7 +26,7 @@ class ScheduleCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           //crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +72,7 @@ class ScheduleCard extends StatelessWidget {
             ),
             const SizedBox(width: 20),
             Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
@@ -80,10 +81,12 @@ class ScheduleCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.w700,
+                        height: 0.9,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 30),
                 Row(
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -96,7 +99,7 @@ class ScheduleCard extends StatelessWidget {
                           style: TextStyle(
                             color: person == 'ME'
                                 ? Colors.black
-                                : Colors.black.withOpacity(0.6),
+                                : Colors.black.withOpacity(0.5),
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                           ),
