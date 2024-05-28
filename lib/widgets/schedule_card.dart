@@ -77,6 +77,7 @@ class ScheduleCard extends StatelessWidget {
             const SizedBox(width: 20),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
