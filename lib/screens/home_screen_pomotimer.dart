@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:toonflix/widgets/mins.dart';
 import 'package:toonflix/widgets/time_image.dart';
 
 class HomeScreenPomotimer extends StatefulWidget {
@@ -25,41 +24,47 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
   bool break_time = false;
 
   void onTick(Timer timer) {
-    if (totalSeconds == 0 && break_time == false) {
+    if (totalSeconds == 0 && (goal == 4 || timestart == 0)) {
+      //real end
       setState(() {
         isrunning = false;
-
+      });
+      timestart = 0;
+      print("1");
+      timer.cancel();
+    } else if (totalSeconds == 0 &&
+        break_time == false &&
+        goal != 4 &&
+        timestart != 0) {
+      //each end, break starts
+      setState(() {
         round = round + 1;
         if (round == 4) {
           goal = goal + 1;
           round = 0;
         }
-        break_time = true;
-      });
-    } else if (totalSeconds == 0 && break_time == true && timestart != 0) {
-      //break time
-      setState(() {
         totalSeconds = 300;
         format(totalSeconds);
-        print(current_minutes);
+        print("2");
       });
-    } else if (totalSeconds == 0 && break_time == true && timestart != 0) {
+      break_time = true;
+    } else if (totalSeconds == 0 &&
+        break_time == true &&
+        goal != 4 &&
+        timestart != 0) {
       //end break time
       totalSeconds = timestart;
       setState(() {
         format(totalSeconds);
         break_time = false;
+        print("3");
       });
-    } else if (totalSeconds == 0 && goal == 4) {
-      isrunning = false;
-      totalSeconds = 0;
-      timer.cancel();
-      setState(() {});
     } else {
       setState(() {
         totalSeconds = totalSeconds - 1;
         current_minutes = totalSeconds ~/ 60;
         current_seconds = totalSeconds % 60;
+        print("4");
       });
     }
   }
