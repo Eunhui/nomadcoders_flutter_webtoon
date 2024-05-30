@@ -94,6 +94,15 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
     });
   }
 
+  void onReset() {
+    timer.cancel();
+    setState(() {
+      isrunning = false;
+      totalSeconds = timestart;
+      format(totalSeconds);
+    });
+  }
+
   void format(int seconds) {
     var duration = Duration(seconds: seconds);
     print(duration);
@@ -126,7 +135,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
               ),
             ),
             Flexible(
-              flex: 3,
+              flex: 2,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +153,6 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
             Flexible(
               flex: 1,
               child: Center(
@@ -153,7 +161,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      for (int i = 1; i <= 35; i += 5)
+                      for (int i = 5; i <= 35; i += 5)
                         Container(
                           padding: const EdgeInsets.all(4),
                           alignment: Alignment.center,
@@ -181,19 +189,30 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
               ),
             ),
             Flexible(
-              flex: 1,
+              flex: 2,
               child: Center(
-                  child: IconButton(
-                iconSize: 120,
-                color: Theme.of(context).cardColor,
-                icon: Icon(isrunning
-                    ? Icons.pause_circle_outline
-                    : Icons.play_circle_outline),
-                onPressed: isrunning ? onPausePressed : onStartPressed,
-              )),
+                child: Column(
+                  children: [
+                    IconButton(
+                      iconSize: 100,
+                      color: Theme.of(context).cardColor,
+                      icon: Icon(isrunning
+                          ? Icons.pause_circle_outline
+                          : Icons.play_circle_outline),
+                      onPressed: isrunning ? onPausePressed : onStartPressed,
+                    ),
+                    IconButton(
+                      iconSize: 50,
+                      color: Theme.of(context).cardColor,
+                      icon: const Icon(Icons.replay_rounded),
+                      onPressed: onReset,
+                    )
+                  ],
+                ),
+              ),
             ),
             Flexible(
-              flex: 2,
+              flex: 1,
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
