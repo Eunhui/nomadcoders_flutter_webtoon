@@ -72,7 +72,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
     if (totalSeconds == 0) return;
     //timer
     timer = Timer.periodic(
-      const Duration(milliseconds: 100),
+      const Duration(seconds: 1),
       onTick,
     );
     setState(() {
