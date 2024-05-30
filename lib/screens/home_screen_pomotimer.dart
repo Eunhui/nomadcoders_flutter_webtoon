@@ -15,25 +15,51 @@ class HomeScreenPomotimer extends StatefulWidget {
 class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
   bool isrunning = false;
   int timestart = 0;
-  int totalSeconds = 100;
+  int totalSeconds = 0;
   late Timer timer;
   int totalPomodoros = 0; // total round
   int current_minutes = 0;
   int current_seconds = 0;
   int round = 0;
   int goal = 0;
+  bool break_time = false;
 
   void onTick(Timer timer) {
-    if (totalSeconds == 0) {
+    if (totalSeconds == 0 && break_time == false) {
       setState(() {
-        totalPomodoros = totalPomodoros + 1;
         isrunning = false;
-        totalSeconds = timestart;
+
+        round = round + 1;
+        if (round == 4) {
+          goal = goal + 1;
+          round = 0;
+        }
+        break_time = true;
       });
+    } else if (totalSeconds == 0 && break_time == true && timestart != 0) {
+      //break time
+      setState(() {
+        totalSeconds = 300;
+        format(totalSeconds);
+        print(current_minutes);
+      });
+    } else if (totalSeconds == 0 && break_time == true && timestart != 0) {
+      //end break time
+      totalSeconds = timestart;
+      setState(() {
+        format(totalSeconds);
+        break_time = false;
+      });
+    } else if (totalSeconds == 0 && goal == 4) {
+      isrunning = false;
+      totalSeconds = 0;
       timer.cancel();
+      setState(() {});
     } else {
       setState(() {
         totalSeconds = totalSeconds - 1;
+        current_minutes = totalSeconds ~/ 60;
+        current_seconds = totalSeconds % 60;
       });
     }
   }
@@ -41,7 +67,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
   void onStartPressed() {
     //timer
     timer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 1),
       onTick,
     );
     setState(() {
@@ -53,6 +79,13 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
     timer.cancel();
     setState(() {
       isrunning = false;
+    });
+  }
+
+  void onSetTimer() {
+    setState(() {
+      totalSeconds = current_minutes * 60 + current_seconds;
+      timestart = totalSeconds;
     });
   }
 
@@ -115,7 +148,28 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      for (int i = 15; i <= 35; i += 5) mins(start_time: '$i'),
+                      for (int i = 1; i <= 35; i += 5)
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              current_minutes = i;
+                              current_seconds = 0;
+                              round = 0;
+                              goal = 0;
+                              onSetTimer();
+                            },
+                            child: Text(
+                              '$i',
+                              style: TextStyle(
+                                color: Theme.of(context).cardColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        )
                     ],
                   ),
                 ),

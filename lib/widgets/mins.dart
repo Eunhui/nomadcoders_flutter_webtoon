@@ -9,20 +9,19 @@ class mins extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).cardColor,
-        ),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
+      padding: const EdgeInsets.all(4),
       alignment: Alignment.center,
-      child: Text(
-        start_time,
-        style: TextStyle(
-          color: Theme.of(context).cardColor,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+      child: OutlinedButton(
+        onPressed: () {
+          print('Button  pressed');
+        },
+        child: Text(
+          start_time,
+          style: TextStyle(
+            color: Theme.of(context).cardColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
