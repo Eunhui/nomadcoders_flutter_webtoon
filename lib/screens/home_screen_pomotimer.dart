@@ -64,7 +64,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
         totalSeconds = totalSeconds - 1;
         current_minutes = totalSeconds ~/ 60;
         current_seconds = totalSeconds % 60;
-        print("4");
+        print('4');
       });
     }
   }
@@ -224,7 +224,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Goal',
+                          '$goal/4',
                           style: TextStyle(
                             color: Theme.of(context).cardColor,
                             fontSize: 20,
@@ -232,7 +232,7 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                           ),
                         ),
                         Text(
-                          '$goal/4',
+                          'Goal',
                           style: TextStyle(
                             color: Theme.of(context).cardColor,
                             fontSize: 20,
