@@ -8,18 +8,20 @@ class mins extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).cardColor,
         ),
+        borderRadius: BorderRadius.circular(12.0),
       ),
       alignment: Alignment.center,
       child: Text(
         start_time,
         style: TextStyle(
           color: Theme.of(context).cardColor,
-          fontSize: 30,
+          fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
       ),
