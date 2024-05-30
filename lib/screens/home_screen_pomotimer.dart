@@ -24,13 +24,16 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
   bool break_time = false;
 
   void onTick(Timer timer) {
-    if (totalSeconds == 0 && (goal == 4 || timestart == 0)) {
+    if (totalSeconds == 0 && goal == 4) {
       //real end
       setState(() {
         isrunning = false;
+        break_time = false;
+        goal = 0;
+        round = 0;
+        totalSeconds = timestart;
+        format(totalSeconds);
       });
-      timestart = 0;
-      print("1");
       timer.cancel();
     } else if (totalSeconds == 0 &&
         break_time == false &&
@@ -45,7 +48,6 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
         }
         totalSeconds = 300;
         format(totalSeconds);
-        print("2");
       });
       break_time = true;
     } else if (totalSeconds == 0 &&
@@ -57,22 +59,20 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
       setState(() {
         format(totalSeconds);
         break_time = false;
-        print("3");
       });
     } else {
       setState(() {
         totalSeconds = totalSeconds - 1;
-        current_minutes = totalSeconds ~/ 60;
-        current_seconds = totalSeconds % 60;
-        print('4');
+        format(totalSeconds);
       });
     }
   }
 
   void onStartPressed() {
+    if (totalSeconds == 0) return;
     //timer
     timer = Timer.periodic(
-      const Duration(milliseconds: 1),
+      const Duration(milliseconds: 100),
       onTick,
     );
     setState(() {
@@ -90,22 +90,26 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
   void onSetTimer() {
     setState(() {
       totalSeconds = current_minutes * 60 + current_seconds;
-      timestart = totalSeconds;
+      format(totalSeconds);
     });
   }
 
   void onReset() {
-    timer.cancel();
+    if (isrunning) timer.cancel();
     setState(() {
       isrunning = false;
-      totalSeconds = timestart;
-      format(totalSeconds);
+      if (break_time) {
+        totalSeconds = 300;
+        format(totalSeconds);
+      } else {
+        totalSeconds = timestart;
+        format(totalSeconds);
+      }
     });
   }
 
   void format(int seconds) {
     var duration = Duration(seconds: seconds);
-    print(duration);
     int min = seconds ~/ 60;
     int sec = seconds % 60;
     current_minutes = min;
@@ -156,34 +160,52 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
             Flexible(
               flex: 1,
               child: Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      for (int i = 5; i <= 35; i += 5)
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          alignment: Alignment.center,
-                          child: OutlinedButton(
-                            onPressed: () {
-                              current_minutes = i;
-                              current_seconds = 0;
-                              round = 0;
-                              goal = 0;
-                              onSetTimer();
-                            },
-                            child: Text(
-                              '$i',
-                              style: TextStyle(
-                                color: Theme.of(context).cardColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                child: ShaderMask(
+                  shaderCallback: (Rect bounds) {
+                    return const LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Colors.black,
+                        Colors.black,
+                        Colors.transparent,
+                      ],
+                      stops: [0.0, 0.1, 0.9, 1.0],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ).createShader(bounds);
+                  },
+                  blendMode: BlendMode.dstIn,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (int i = 5; i <= 35; i += 5)
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            alignment: Alignment.center,
+                            child: OutlinedButton(
+                              onPressed: () {
+                                timestart = i * 60;
+                                current_minutes = i;
+                                current_seconds = 0;
+                                round = 0;
+                                goal = 0;
+                                break_time = false;
+                                onSetTimer();
+                              },
+                              child: Text(
+                                '$i',
+                                style: TextStyle(
+                                  color: Theme.of(context).cardColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                    ],
+                          )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -206,7 +228,15 @@ class _HomeScreenPomotimerState extends State<HomeScreenPomotimer> {
                       color: Theme.of(context).cardColor,
                       icon: const Icon(Icons.replay_rounded),
                       onPressed: onReset,
-                    )
+                    ),
+                    if (break_time)
+                      Text(
+                        'Break Time!',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).cardColor),
+                      )
                   ],
                 ),
               ),
